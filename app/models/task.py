@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
+from datetime import datetime
 # from sqlalchemy import Datetime
 from ..db import db
 
@@ -7,7 +8,8 @@ class Task(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=False)
-    completed_at: Mapped[bool] = mapped_column(default=False, nullable=True)
+    completed_at: Mapped[datetime | None] = mapped_column(
+        default=None, nullable=True)
 
     def to_dict(self):
         return {
