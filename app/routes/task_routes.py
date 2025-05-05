@@ -13,7 +13,7 @@ def create_task():
 
     db.session.add(new_task)
     db.session.commit()
-    return new_task.to_dict(), 201
+    return {"task": new_task.to_dict()}, 201
 
 
 @task_bp.get("")

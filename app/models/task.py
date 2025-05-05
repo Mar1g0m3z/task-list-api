@@ -21,7 +21,7 @@ class Task(db.Model):
             task_dict["completed_at"] = self.completed_at
         return task_dict
 
-    # @classmethod
+    @classmethod
     def from_dict(cls, task_data):
         return cls(
             title=task_data["title"],
