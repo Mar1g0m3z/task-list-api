@@ -6,6 +6,16 @@ from .route_utilities import validate_model
 task_bp = Blueprint("task_bp", __name__, url_prefix="/tasks")
 
 
+@task_bp.post("")
+def create_task():
+    request_body = request.get_json()
+    new_task = Task.from_dict(request_body)
+
+    db.session.add(new_task)
+    db.session.commit()
+    return new_task.to_dict(), 201
+
+
 @task_bp.get("")
 def get_all_tasks():
     query = db.select(Task)
@@ -14,13 +24,11 @@ def get_all_tasks():
         query = query.where(Task.name == title_param)
 
     tasks = db.session.scalars(query)
-    tasks_response = []
-    for task in tasks:
-        tasks_response.append(task.to_dict())
+    tasks_response = [task.to_dict() for task in tasks]
     return tasks_response
 
 
 @task_bp.get("/<id>")
 def get_one_task(id):
     task = validate_model(Task, id)
-    return task.to_dict()
+    return {"task": task.to_dict()}

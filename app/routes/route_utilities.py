@@ -1,4 +1,4 @@
-from flask import abort, make_response
+from flask import abort, make_response, jsonify
 from ..db import db
 
 
@@ -7,8 +7,9 @@ def validate_model(cls, modelid):
         model_id = int(modelid)
     except ValueError:
         invalid_response = {
-            "message": f"{cls.__name__} id ({model_id})is invalid"}
+            "message": f"{cls.__name__} id ({model_id}) is invalid."}
         abort(make_response(invalid_response, 400))
+
     query = db.select(cls).where(cls.id == model_id)
     model = db.session.scalar(query)
 
