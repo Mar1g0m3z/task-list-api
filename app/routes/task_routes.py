@@ -40,8 +40,15 @@ def create_task():
 
 @task_bp.get("")
 def get_all_tasks():
+    sort_param = request.args.get("sort")
     query = db.select(Task)
+
+    if sort_param == "asc":
+        query = query.order_by(Task.title.asc())
+    elif sort_param == "desc":
+        query = query.order_by(Task.title.desc())
     title_param = request.args.get("title")
+    
     if title_param:
         query = query.where(Task.name == title_param)
 
