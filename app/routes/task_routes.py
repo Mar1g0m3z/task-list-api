@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, make_response, request, Response
 from app.models.task import Task
 from ..db import db
-from .route_utilities import validate_model
+from .route_utilities import validate_model, send_slack_message
 from datetime import datetime, timezone
 
 task_bp = Blueprint("task_bp", __name__, url_prefix="/tasks")
@@ -67,8 +67,11 @@ def get_one_task(id):
 @task_bp.patch("/<id>/mark_complete")
 def mark_task_complete(id):
     task = validate_model(Task, id)
+
     task.completed_at = datetime.now(timezone.utc)
     db.session.commit()
+    
+    send_slack_message(task.title)
     return Response(status=204, mimetype="application/json")
 
 
