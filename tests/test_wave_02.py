@@ -15,17 +15,27 @@ def test_get_tasks_sorted_asc(client, three_tasks):
             "id": 2,
             "title": "Answer forgotten email 📧",
             "description": "",
-            "is_complete": False},
+            "is_complete": False,
+
+            "goal_id": None,
+
+        },
         {
             "id": 3,
             "title": "Pay my outstanding tickets 😭",
             "description": "",
-            "is_complete": False},
+            "is_complete": False,
+
+            "goal_id": None,
+        },
         {
             "id": 1,
             "title": "Water the garden 🌷",
             "description": "",
-            "is_complete": False}
+            "is_complete": False,
+
+            "goal_id": None,
+        }
     ]
 
 
@@ -43,15 +53,24 @@ def test_get_tasks_sorted_desc(client, three_tasks):
             "description": "",
             "id": 1,
             "is_complete": False,
-            "title": "Water the garden 🌷"},
+            "goal_id": None,
+
+            "title": "Water the garden 🌷"
+        },
         {
             "description": "",
             "id": 3,
             "is_complete": False,
-            "title": "Pay my outstanding tickets 😭"},
+            "goal_id": None,
+
+            "title": "Pay my outstanding tickets 😭"
+        },
         {
             "description": "",
             "id": 2,
             "is_complete": False,
-            "title": "Answer forgotten email 📧"},
+            "goal_id": None,
+
+            "title": "Answer forgotten email 📧"
+        }
     ]

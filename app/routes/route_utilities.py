@@ -26,6 +26,18 @@ def validate_model(cls, modelid):
     return model
 
 
+def create_model(cls, model_data):
+    try:
+        new_model = cls.from_dict(model_data)
+    except KeyError as e:
+        response = {"message": f"Invalid request: missing {e.args[0]}"}
+        abort(make_response(response, 400))
+
+    db.session.add(new_model)
+    db.session.commit()
+    return new_model.to_dict(), 201
+
+
 def send_slack_message(task_title):
     url = "https://slack.com/api/chat.postMessage"
 

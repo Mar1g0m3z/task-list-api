@@ -1,7 +1,8 @@
 from flask import Blueprint, abort, make_response, request, Response
 from app.models.goal import Goal
+from app.models.task import Task
 from ..db import db
-from .route_utilities import validate_model
+from .route_utilities import validate_model, create_model
 
 goal_bp = Blueprint("goal_bp", __name__, url_prefix="/goals")
 
@@ -52,3 +53,40 @@ def delete_goal(id):
     db.session.delete(goal)
     db.session.commit()
     return Response(status=204, mimetype="application/json")
+
+
+@goal_bp.get("/<id>/tasks")
+def get_all_goal_tasks(id):
+    goal = validate_model(Goal, id)
+    tasks = [task.to_dict() for task in goal.tasks]
+
+    return {
+        "id": goal.id,
+        "title": goal.title,
+        "tasks": tasks
+    }, 200
+
+
+@goal_bp.post("/<id>/tasks")
+def create_task_with_goal_id(id):
+    goal = validate_model(Goal, id)
+    request_body = request.get_json()
+
+    task_ids = request_body.get("task_ids")
+    if not task_ids or not isinstance(task_ids, list):
+        return {"message": "'task_ids' field is required and must be a list"}, 400
+
+    # Query all tasks by the given IDs
+    tasks = Task.query.filter(Task.id.in_(task_ids)).all()
+
+    if len(tasks) != len(task_ids):
+        return {"message": "One or more task_ids are invalid"}, 404
+
+    # Replace the tasks associated with the goal
+    goal.tasks = tasks
+    db.session.commit()
+
+    return {
+        "id": goal.id,
+        "task_ids": [task.id for task in tasks]
+    }, 200

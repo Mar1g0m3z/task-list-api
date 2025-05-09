@@ -28,7 +28,9 @@ def test_get_tasks_one_saved_tasks(client, one_task):
             "id": 1,
             "title": "Go on my daily walk 🏞",
             "description": "Notice something new every day",
-            "is_complete": False
+            "is_complete": False,
+            "goal_id": None,  # Expecting None since there's no goal
+
         }
     ]
 
@@ -47,7 +49,9 @@ def test_get_task(client, one_task):
             "id": 1,
             "title": "Go on my daily walk 🏞",
             "description": "Notice something new every day",
-            "is_complete": False
+            "is_complete": False,
+            "goal_id": None,  # Expecting None since there's no goal
+
         }
     }
 
@@ -70,6 +74,7 @@ def test_create_task(client):
     response = client.post("/tasks", json={
         "title": "A Brand New Task",
         "description": "Test Description",
+
     })
     response_body = response.get_json()
 
@@ -81,7 +86,10 @@ def test_create_task(client):
             "id": 1,
             "title": "A Brand New Task",
             "description": "Test Description",
-            "is_complete": False
+            "is_complete": False,
+
+            "goal_id": None,  # Expecting goal_id as None
+
         }
     }
 
