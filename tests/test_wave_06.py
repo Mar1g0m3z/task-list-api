@@ -44,7 +44,6 @@ def test_post_task_ids_to_goal_already_with_goals(client, one_task_belongs_to_on
     query = db.select(Goal).where(Goal.id == 1)
     assert len(db.session.scalar(query).tasks) == 2
 
-
 # @pytest.mark.skip(reason="No way to test this feature yet")
 def test_get_tasks_for_specific_goal_no_goal(client):
     # Act

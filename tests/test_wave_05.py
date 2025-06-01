@@ -26,8 +26,7 @@ def test_get_goals_one_saved_goal(client, one_goal):
     assert response_body == [
         {
             "id": 1,
-            "title": "Build a habit of going outside daily",
-            "tasks": []
+            "title": "Build a habit of going outside daily"
         }
     ]
 
@@ -44,13 +43,13 @@ def test_get_goal(client, one_goal):
     assert response_body == {
         "goal": {
             "id": 1,
-            "title": "Build a habit of going outside daily",
-            "tasks": []
+            "title": "Build a habit of going outside daily"
         }
     }
 
-
 # @pytest.mark.skip(reason="test to be completed by student")
+
+
 def test_get_goal_not_found(client):
     pass
     # Act
@@ -76,8 +75,7 @@ def test_create_goal(client):
     assert response_body == {
         "goal": {
             "id": 1,
-            "title": "My New Goal",
-            "tasks": []
+            "title": "My New Goal"
         }
     }
 
@@ -139,6 +137,8 @@ def test_delete_goal_not_found(client):
     assert db.session.scalars(db.select(Goal)).all() == []
     # ---- Complete Act Here ----
 
+
+# @pytest.mark.skip(reason="No way to test this feature yet")
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
 def test_create_goal_missing_title(client):

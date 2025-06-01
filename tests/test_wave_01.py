@@ -28,9 +28,7 @@ def test_get_tasks_one_saved_tasks(client, one_task):
             "id": 1,
             "title": "Go on my daily walk 🏞",
             "description": "Notice something new every day",
-            "is_complete": False,
-            "goal_id": None,  # Expecting None since there's no goal
-
+            "is_complete": False
         }
     ]
 
@@ -49,9 +47,7 @@ def test_get_task(client, one_task):
             "id": 1,
             "title": "Go on my daily walk 🏞",
             "description": "Notice something new every day",
-            "is_complete": False,
-            "goal_id": None,  # Expecting None since there's no goal
-
+            "is_complete": False
         }
     }
 
@@ -74,7 +70,6 @@ def test_create_task(client):
     response = client.post("/tasks", json={
         "title": "A Brand New Task",
         "description": "Test Description",
-
     })
     response_body = response.get_json()
 
@@ -86,10 +81,7 @@ def test_create_task(client):
             "id": 1,
             "title": "A Brand New Task",
             "description": "Test Description",
-            "is_complete": False,
-
-            "goal_id": None,  # Expecting goal_id as None
-
+            "is_complete": False
         }
     }
 
@@ -133,7 +125,6 @@ def test_update_task_not_found(client):
     # Assert
     assert response.status_code == 404
     assert response_body == {"message": "Task with id (1) not found."}
-    # *****************************************************************
 
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
@@ -163,6 +154,22 @@ def test_delete_task_not_found(client):
 
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
+def test_create_task_must_contain_title(client):
+    # Act
+    response = client.post("/tasks", json={
+        "description": "Test Description"
+    })
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert response_body == {
+        "details": "Invalid data"
+    }
+    assert db.session.scalars(db.select(Task)).all() == []
+
+
 def test_create_task_must_contain_title(client):
     # Act
     response = client.post("/tasks", json={
