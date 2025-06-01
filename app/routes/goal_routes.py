@@ -58,7 +58,7 @@ def delete_goal(id):
 @goal_bp.get("/<id>/tasks")
 def get_all_goal_tasks(id):
     goal = validate_model(Goal, id)
-    tasks = [task.to_dict() for task in goal.tasks]
+    tasks = [task.to_dict(include_goal_id=True) for task in goal.tasks]
 
     return {
         "id": goal.id,

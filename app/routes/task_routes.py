@@ -61,7 +61,7 @@ def get_all_tasks():
 @task_bp.get("/<id>")
 def get_one_task(id):
     task = validate_model(Task, id)
-    return {"task": task.to_dict()}
+    return {"task": task.to_dict(include_goal_id=True)}
 
 
 @task_bp.patch("/<id>/mark_complete")
@@ -70,7 +70,7 @@ def mark_task_complete(id):
 
     task.completed_at = datetime.now(timezone.utc)
     db.session.commit()
-    
+
     send_slack_message(task.title)
     return Response(status=204, mimetype="application/json")
 

@@ -20,18 +20,22 @@ class Task(db.Model):
             "id": self.id,
             "title": self.title,
             "description": self.description,
-            "is_complete": bool(self.completed_at),
-            "goal_id": self.goal.id if self.goal else None,  # Default to None
+            "is_complete": self.completed_at is not None,
+            # "goal_id": self.goal.id if self.goal else None,  # Default to None
             # "goal_title": self.goal.title if self.goal else None  # Default to None
 
         }
-        if include_completed_at:
-            task_dict["completed_at"] = self.completed_at
-
-        if include_goal_id and self.goal:
-            task_dict["goal_id"] = self.goal.id
-            task_dict["goal_title"] = self.goal.title
+        if include_goal_id and self.goal_id:
+            task_dict["goal_id"] = self.goal_id
         return task_dict
+
+    # if include_completed_at:
+    #     task_dict["completed_at"] = self.completed_at
+
+    # if include_goal_id and self.goal:
+    #     task_dict["goal_id"] = self.goal.id
+    #     task_dict["goal_title"] = self.goal.title
+    # return task_dict
 
     @classmethod
     def from_dict(cls, task_data):
